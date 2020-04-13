@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="css/reset.css">
+<link rel="stylesheet" type="text/css" href="css/fonts.css">
+<link rel="stylesheet" type="text/css" href="css/newdevice.css">
+<title>Hello World!</title>
+</head>
+
+<body onload="load()">
+	<div class="mainWrapper clearfix">
+		<div class="deviceMetadataWrapper">
+			<h1 class="mainHeader">New Device</h1>
+			<div id="deviceMetadata" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Action Bar</h2>
+					<h3 class="sectionSub">Header</h3>
+					<div class="formSubSection">
+						Device Name<br/>
+						<input id="actionBarHeaderName" type="text" name="deviceTitle" value="" placeholder="-">
+						Color<br/>
+						<input id="actionBarHeaderColor" class="inputShort" type="text" name="deviceTitle" placeholder="-">
+					</div>
+
+					<div class="formSubSectionHeader">
+						<div class="checkbox checked" id="highLevelDataCheckbox" checked="true"></div>
+						<label class="sectionSub" id="highLevelDataLabel">High Level Data/Action</label>
+						<span class="selectArrow">&#9660;</span>
+						<select id="highLevelDataOptions">
+							<option value="message">Message</option>
+							<option value="toggle">Toggle</option>
+							<option value="push">Push Button</option>
+						</select>
+					</div>
+					<div  id="highLevelDataSection">
+						<div class="formSubSection" id="HighLevelDataMessage">
+							Call<br/>
+							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+						</div>
+						<div class="formSubSection" id="HighLevelDataToggle">
+							Label (Off)<br/>
+							<input id="highLevelDataToggleLabelOff" type="text" name="deviceTitle" value="" placeholder="Label">
+							Label (On)<br/>
+							<input id="highLevelDataToggleLabelOn" type="text" name="deviceTitle" value="" placeholder="Label">
+							Call<br/>
+							<input id="" type="text" name="deviceTitle" placeholder="-">
+						</div>
+						<div class="formSubSection" id="HighLevelDataPushButton">
+							Button Text<br/>
+							<input id="highLevelDataButtonText" type="text" name="deviceTitle" value="" placeholder="Button">
+							Call<br/>
+							<input id="" type="text" name="deviceTitle" placeholder="-">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Monitors</h2>
+					<div class="monitorCreate" id="monitorCreate">+ New Monitor</div><br/>
+					<div id="monitorList">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="devicePreviewWrapper">
+			<h1 class="mainHeader">Preview</h1>
+
+			<div id="devicePreview" class="formSection device">
+				<div class="deviceHeader clearfix">
+					<div class="deviceTitle" id="previewDeviceName">-</div>
+
+					<div class="deviceHighLevel" id="deviceHighLevelPreview">
+						<div class="highLevelToggleLabel" id="deviceMessagePreview">-</div>
+
+						<div id="deviceTogglePreview">
+							<div class="highLevelToggleLabel" id="deviceToggleLabelPreview">Off Label</div>
+							<label class="switch">
+							  <input _on="On Label" _off="Off Label" id="deviceToggleInputPreview" type="checkbox">
+							  <span class="slider round"></span>
+							</label>
+						</div>
+
+						<div id="deviceTogglePreview">
+							<input id="deviceButtonPreview" type="button" name="short text" value="button">
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script src="js/formactions.js"></script>
+</body>
+</html> 

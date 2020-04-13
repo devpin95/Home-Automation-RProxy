@@ -1,0 +1,316 @@
+$background-color: #0b0c10;
+$foreground-color: #1f2833;
+$highlight: #2f3c4d;
+$white: #c5c6c7;
+$white-faded: #7d8082;
+$default-title: #f1c40f;
+
+@mixin condensedRegular() {
+	font-family: 'asap_condensedregular';
+}
+@mixin condensedBold() {
+	font-family: 'asap_condensedbold';
+}
+@mixin borderRadius($radius) {
+	border-radius: $radius;
+}
+@mixin boxSizing($sizing) {
+	-webkit-box-sizing: $sizing; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: $sizing;    /* Firefox, other Gecko */
+	box-sizing: $sizing;         /* Opera/IE 8+ */
+}
+@mixin deviceBoxShadow() {
+	-webkit-box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.75);
+	box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.75);
+}
+@mixin deviceBorderRadius() {
+	border-radius: 5px;
+}
+@mixin user-select-none(){
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
+}
+
+body {
+	@include condensedRegular();
+	background-color: $background-color;
+}
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 1px;
+  right: 0;
+  bottom: 1px;
+  background-color: #0b0c10;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-bottom: 1px solid #2f3c4d;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  left: 1px;
+  bottom: 1px;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  background-color: #45a29e;
+  opacity: 0.5;
+  -webkit-box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.75);
+}
+
+input:checked + .slider {
+  background-color: #0b0c10;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+  opacity: 1;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox {
+	width: 7px;
+	height: 7px;
+	float: left;
+	margin: 5px 10px 0 5px;
+	box-shadow: 0 0 0 2px #1f2833, 0 0 0 3px $white;
+	cursor: pointer;
+}
+.checked {
+	background-color: $white;
+}
+.unchecked {
+	background-color: transparent;
+}
+
+input[type='button']{
+	font-family: 'asap_condensedsemibold';
+	font-size:15px;
+	color: #0b0c10;
+	min-width: 75px;
+	display:block;
+	margin: 0 auto;
+	padding: 2px 5px;
+	border: none;
+	border-radius: 3px;
+	text-align: center;
+	background-color: #45a29e;
+	border-bottom: 1px solid #2f3c4d;
+	-webkit-box-shadow: 0px 2px 2px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.75);
+	box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
+	cursor: pointer;
+}
+input[type='button']:active{
+	opacity: .5;
+}
+
+.mainWrapper {
+	width: 1010px;
+	margin: 0 auto;
+	padding-top: 50px;
+}
+.deviceMetadataWrapper {
+	float: left;
+	width: 500px;
+	margin-right: 10px;
+	padding-bottom: 200px;
+}
+.devicePreviewWrapper {
+	float: left;
+	width: 500px;
+}
+.device {
+	width:100%;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: #1f2833;
+	border-top: 1px solid #2f3c4d;
+	@include deviceBoxShadow();
+	@include deviceBorderRadius();
+}
+.deviceTitle {
+	font-family: 'asap_condensedbold';
+	font-size: 25px;
+	float:left;
+	color: $white;
+}
+.deviceHighLevel {
+	float: right;
+	font-size: 15px;
+	color: #c5c6c7;
+	padding-top: 6px;
+}
+.highLevelToggleLabel {
+	float: left;
+	margin-right: 10px;
+	text-align: right;
+}
+
+.mainHeader {
+	@include condensedBold();
+	font-size: 30px;
+	color: $white;
+	margin-bottom: 10px;
+}
+.formSection {
+	width: 500px;
+	background-color: $foreground-color;
+	float:left;
+	@include boxSizing(border-box);
+	@include deviceBoxShadow();
+	@include deviceBorderRadius();
+	border: 1px solid #000;
+	border-top: 1px solid $highlight;
+	margin-bottom: 20px;
+}
+.formGroup {
+	padding: 10px;
+}
+.formGroup .sectionTitle {
+	@include condensedBold();
+	font-size: 25px;
+	color: $white;
+	margin-bottom: 10px;
+}
+.formGroup .sectionSub {
+	@include condensedRegular();
+	font-size: 18px;
+	color: $white;
+	margin-bottom: 10px;
+}
+.formGroup .sectionInputLabel{
+	@include condensedRegular();
+	font-size: 15px;
+	color: $white;
+	margin-bottom: 10px;
+}
+.formGroup .formSubSection{
+	background-color: $background-color;
+	margin-bottom: 20px;
+	padding:10px;
+	font-size: 15px;
+	border-bottom: 1px solid $highlight;
+	@include boxSizing(border-box);
+	@include deviceBorderRadius();
+	color: $white;
+}
+.formGroup .formSubSection input[type="text"] {
+	width: 100%;
+	border: none;
+	height: 20px;
+	@include borderRadius(2px);
+	@include boxSizing(border-box);
+	padding: 0 5px;
+	margin: 10px 0 15px 0;
+	background-color: $white;
+}
+.formGroup .formSubSection input[type="text"]:last-child {
+	margin-bottom: 5px;
+}
+.formGroup .formSubSection input[type="text"]:focus {
+	background-color: #fff;
+}
+.inputShort {
+	width: 150px !important;
+}
+.formSubSectionHeader {
+	margin-bottom: 10px;
+}
+#highLevelDataLabel {
+	@include user-select-none();
+}
+#highLevelDataLabel:hover {
+	cursor: pointer;
+}
+.formSubSectionHeader select{
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	border: none;
+	background-color: transparent;
+	text-align: right;
+	color: $white;
+	float: right;
+	cursor: pointer;
+}
+.selectArrow {
+	font-size:6px;
+	color: $white;
+	margin-top: 7px;
+	float: right;
+	cursor: pointer;
+}
+select option {
+	background-color: $white;
+	color: $background-color;
+	border: 1px solid #0f0;
+}
+.monitorCreate {
+	color: $white;
+	cursor: pointer;
+	float: left;
+}
+.monitorCreate:hover {
+	text-decoration: underline;
+}
+.formMonitorGroup{
+	position: relative;
+	min-height: 100px;
+	background-color: $background-color;
+	margin-top: 50px;
+}
+.formMonitorGroup:first-child {
+	margin-top: 10px;
+}
+.formMonitorGroupDelete {
+	color: $white;
+	position: absolute;
+	top: -25px;
+	right: 0;
+	cursor: pointer;
+}
+.formMonitorGroupDelete:hover {
+	text-decoration: underline;
+}
