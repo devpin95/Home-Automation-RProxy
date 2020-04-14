@@ -123,7 +123,6 @@ input:checked + .slider:before {
 .unchecked {
 	background-color: transparent;
 }
-
 input[type='button']{
 	font-family: 'asap_condensedsemibold';
 	font-size:15px;
@@ -145,6 +144,9 @@ input[type='button']{
 input[type='button']:active{
 	opacity: .5;
 }
+.deviceHeader input[type='button'] {
+	margin-top: -4px;
+}
 
 .mainWrapper {
 	width: 1010px;
@@ -160,6 +162,8 @@ input[type='button']:active{
 .devicePreviewWrapper {
 	float: left;
 	width: 500px;
+	margin-left: 510px;
+	position: fixed;
 }
 .device {
 	width:100%;
@@ -285,7 +289,6 @@ input[type='button']:active{
 select option {
 	background-color: $white;
 	color: $background-color;
-	border: 1px solid #0f0;
 }
 .monitorCreate {
 	color: $white;
@@ -300,6 +303,8 @@ select option {
 	min-height: 100px;
 	background-color: $background-color;
 	margin-top: 50px;
+	border: 1px solid #0b0c10;
+	@include boxSizing(border-box);
 }
 .formMonitorGroup:first-child {
 	margin-top: 10px;
@@ -313,4 +318,42 @@ select option {
 }
 .formMonitorGroupDelete:hover {
 	text-decoration: underline;
+}
+.deviceMonitors {
+	background-color: $background-color;
+	border-radius: 5px;
+	border-bottom: 1px solid $highlight;
+	padding: 7px;
+	-moz-box-sizing: border-box; 
+    -webkit-box-sizing: border-box; 
+    box-sizing: border-box;
+	margin-top: 10px;
+	color: $white;
+}
+.hide {
+	display: none;
+}
+.deviceMonitors table tr th{
+	width: 250px;
+	padding: 5px 0;
+	font-size: 15px;
+}
+.deviceMonitors table tr {
+	border-bottom: 1px solid #1f2833;
+}
+.deviceMonitors table tr:last-child{
+	border-bottom: none;
+}
+.deviceMonitors table tr th:first-child{
+	font-family: 'asap_condensedbold';
+	text-align: left;
+}
+.deviceMonitors table tr th:last-child{
+	text-align: right;
+}
+.deviceMonitors table tr:first-child th{
+	padding-top: 0;
+}
+.deviceMonitors table tr:last-child th{
+	padding-bottom: 0;
 }

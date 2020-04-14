@@ -1,4 +1,8 @@
-var checkboxEntered = false;
+let checkboxEntered = false;
+let monitorCount = 0;
+let monitorAbsCount = 0;
+
+
 function load() {
 
 	document.getElementById("HighLevelDataMessage").style.display = "";
@@ -185,6 +189,18 @@ function buildMonitorForm() {
 		<input id="" type="text" name="" placeholder="-">
 	</div>
 	**/
+	++monitorCount;
+	++monitorAbsCount;
+
+	var newrow = buildMonitor();
+	document.getElementById("deviceMonitorListPreview").appendChild(newrow.row);
+	// console.log(newrow.row);
+	// console.log(newrow.label);
+
+	if ( monitorCount > 0 ) {
+		document.getElementById("deviceMonitorsPreview").classList.remove("hide");
+	}
+
 	var formgroup = document.createElement("div");
 	formgroup.classList.add("formMonitorGroup");
 	formgroup.classList.add("formSubSection");
@@ -194,8 +210,35 @@ function buildMonitorForm() {
 	formgroupdelete.innerHTML = "delete";
 
 	formgroupdelete.addEventListener("click", function(){
+		--monitorCount;
+		console.log(newrow.row);
+		if ( monitorCount == 0 ) {
+			document.getElementById("deviceMonitorsPreview").classList.add("hide");
+		}
+
+		console.log(monitorCount);
 		this.parentNode.parentNode.removeChild(this.parentNode);
-	})
+
+		var activeMonitorsList = document.getElementById("deviceMonitorListPreview").children;
+		console.log(activeMonitorsList);
+		for ( var i = 0; i < activeMonitorsList.length; ++i ) {
+			if ( activeMonitorsList[i] === newrow.row ) {
+				console.log("remove");
+				newrow["row"].parentNode.removeChild(newrow["row"]);
+				break;
+			}
+		}
+	});
+
+	formgroupdelete.addEventListener("mouseover", function(){
+		this.parentNode.style.border = "1px solid #e74c3c";
+		newrow["row"].style.color = "#e74c3c";
+	});
+	formgroupdelete.addEventListener("mouseout", function(){
+		this.parentNode.style.border = "1px solid #0b0c10";
+		this.parentNode.style.borderBottom = "1px solid #2f3c4d";
+		newrow["row"].style.color = "";
+	});
 
 	var label1 = document.createElement("label");
 	label1.innerHTML = "Label";
@@ -204,7 +247,15 @@ function buildMonitorForm() {
 
 	var labelInput = document.createElement("input");
 	labelInput.type = "text";
-	labelInput.placeholder = "-";
+	labelInput.placeholder = "Label " + monitorAbsCount;
+
+	labelInput.addEventListener("keyup", function(){
+		if ( this.value == "" ) {
+			newrow["label"].innerHTML = this.getAttribute("placeholder");
+		} else {
+			newrow["label"].innerHTML = this.value;
+		}
+	});
 
 	var callInput = document.createElement("input");
 	callInput.type = "text";
@@ -216,5 +267,28 @@ function buildMonitorForm() {
 	formgroup.appendChild(label2);
 	formgroup.appendChild(callInput);
 
+	formgroup.addEventListener("mouseover", function() {
+		newrow["row"].style.color = "#e67e22";
+	}, true)
+	formgroup.addEventListener("mouseout", function() {
+		newrow["row"].style.color = "";
+	}, true)
+
 	document.getElementById("monitorList").appendChild(formgroup);
+}
+
+function buildMonitor() {
+	var row = document.createElement("tr");
+	var labelColumn = document.createElement("th");
+	labelColumn.innerHTML = "Label " + monitorAbsCount;
+	var valueColumn = document.createElement("th");
+	valueColumn.innerHTML = "--";
+
+	row.appendChild(labelColumn);
+	row.appendChild(valueColumn);
+
+	return {
+		row: row,
+		label: labelColumn
+	}
 }
