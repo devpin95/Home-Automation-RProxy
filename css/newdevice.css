@@ -309,7 +309,7 @@ select option {
   color: #0b0c10;
 }
 
-.monitorCreate {
+.actionCreate, .monitorCreate {
   color: #c5c6c7;
   cursor: pointer;
   float: left;
@@ -394,6 +394,131 @@ select option {
 
 .deviceMonitors table tr:last-child th {
   padding-bottom: 0;
+}
+
+.actionCreate {
+  margin-right: 10px;
+}
+
+.actionCreate:hover {
+  text-decoration: underline;
+}
+
+.formActionGroup {
+  position: relative;
+  min-height: 100px;
+  background-color: #0b0c10;
+  margin-top: 50px;
+  border: 1px solid #0b0c10;
+  -webkit-box-sizing: border-box;
+  /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;
+  /* Firefox, other Gecko */
+  box-sizing: border-box;
+  /* Opera/IE 8+ */
+}
+
+.formActionGroup:first-child {
+  margin-top: 10px;
+}
+
+.formActionGroupDelete {
+  color: #c5c6c7;
+  position: absolute;
+  top: -25px;
+  right: 0;
+  cursor: pointer;
+}
+
+.formActionGroupDelete:hover {
+  text-decoration: underline;
+}
+
+#actionList .formSubSection:first-child {
+  margin-top: 40px;
+}
+
+.formActionTab {
+  font-family: "asap_condensedbold";
+  font-size: 18px;
+  background-color: #0b0c10;
+  text-align: center;
+  position: absolute;
+  top: -30px;
+  left: -1px;
+  padding: 10px;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #0b0c10;
+}
+
+.formButtonTab {
+  color: #3498db;
+}
+
+.formInputTab {
+  color: #2ecc71;
+}
+
+.formToggleTab {
+  color: #9b59b6;
+}
+
+#actionListPreview {
+  margin-top: 15px;
+}
+
+.actionListLeftPreview, .actionListRightPreview {
+  width: 50%;
+  float: left;
+}
+
+.deviceActionGroup {
+  margin: 30px 0;
+}
+
+.actionListLeftPreview .deviceActionGroup:first-child, .actionListRightPreview .deviceActionGroup:first-child {
+  margin: 0;
+}
+
+.actionListLeftPreview .deviceActionGroup:last-child, .actionListRightPreview .deviceActionGroup:last-child {
+  margin-bottom: 15px;
+}
+
+.actionListCenterPreview {
+  clear: both;
+}
+
+.actionListCenterPreview .deviceActionGroup {
+  margin: 15px 0 15px 0;
+}
+
+.deviceActionLabel {
+  font-family: "asap_condensedbold";
+  color: #c5c6c7;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.deviceActionSwitchWrapper {
+  margin: 0 auto;
+  width: 30px;
+  margin-bottom: 5px;
+}
+
+.deviceActionGroup input[type=text] {
+  font-family: "asap_condensedregular";
+  font-size: 15px;
+  width: 75px;
+  display: block;
+  margin: 0 auto;
+  border: none;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.deviceActionGroup input[type=text]:invalid {
+  background-color: #e74c3c;
 }
 
 /*# sourceMappingURL=newdevice.css.map */

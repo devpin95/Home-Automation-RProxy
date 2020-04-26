@@ -59,9 +59,57 @@
 			<div id="" class="formSection">
 				<div class="formGroup clearfix">
 					<h2 class="sectionTitle">Monitors</h2>
-					<div class="monitorCreate" id="monitorCreate">+ New Monitor</div><br/>
+					<div class="monitorCreate" id="monitorCreate">+ Monitor</div><br/>
 					<div id="monitorList">
 						
+					</div>
+				</div>
+			</div>
+
+			<div id="" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Actions</h2>
+					<div class="actionCreate" id="actionCreateButton">+ Button&nbsp;</div>
+					<div class="actionCreate" id="actionCreateInput">+ Input&nbsp;</div>
+					<div class="actionCreate" id="actionCreateToggle">+ Toggle&nbsp;</div>
+					<br/>
+					<div id="actionList">
+						<!-- <div class="formActionGroup formSubSection actionButton clearfix">
+							<div class="formActionTab formButtonTab">Button</div>
+							<div class="formActionGroupDelete">delete</div>
+							<label>Action Label</label>
+							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+							<label>Value</label>
+							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+							<label>Call</label>
+							<input id="" type="text" name="deviceTitle" placeholder="-">
+						</div>
+
+							<div class="formActionGroup formSubSection actionButton">
+								<div class="formActionTab formInputTab">Input</div>
+								<div class="formActionGroupDelete">delete</div>
+								<label>Action Label</label>
+								<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+								<label>Placeholder Text</label>
+								<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+								<label>Validation</label>
+								<input id="" type="text" name="deviceTitle" value="" placeholder="Regex">
+								<label>Call</label>
+								<input id="" type="text" name="deviceTitle" placeholder="-">
+							</div>
+
+						<div class="formActionGroup formSubSection actionButton">
+							<div class="formActionTab formToggleTab">Toggle</div>
+							<div class="formActionGroupDelete">delete</div>
+							<label>Action Label</label>
+							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+							<label>Label (off)</label>
+							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+							<label>Label (on)</label>
+							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+							<label>Call</label>
+							<input id="" type="text" name="deviceTitle" placeholder="-">
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -93,16 +141,14 @@
 
 				<!-- Monitors -->
 				<div class="deviceMonitors hide" id="deviceMonitorsPreview">
-					<table id="deviceMonitorListPreview">
-<!-- 						<tr>
-							<th>Label</th>
-							<th>value</th>
-						</tr>
-						<tr>
-							<th>Label</th>
-							<th>value</th>
-						</tr> -->
-					</table>
+					<table id="deviceMonitorListPreview"></table>
+				</div>
+
+				<!-- Actions -->
+				<div id="actionListPreview" class="hide clearfix">
+					<div class="actionListLeftPreview clearfix" id="actionListLeft"></div>
+					<div class="actionListRightPreview clearfix" id="actionListRight"></div>
+					<div id="actionListCenter" class="actionListCenterPreview clearfix"></div>
 				</div>
 			</div>
 

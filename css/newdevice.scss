@@ -290,10 +290,13 @@ select option {
 	background-color: $white;
 	color: $background-color;
 }
-.monitorCreate {
+%createButton {
 	color: $white;
 	cursor: pointer;
 	float: left;
+}
+.monitorCreate {
+	@extend %createButton;
 }
 .monitorCreate:hover {
 	text-decoration: underline;
@@ -356,4 +359,103 @@ select option {
 }
 .deviceMonitors table tr:last-child th{
 	padding-bottom: 0;
+}
+.actionCreate {
+	@extend %createButton;
+	margin-right: 10px;
+}
+.actionCreate:hover{
+	text-decoration: underline;
+}
+.formActionGroup{
+	position: relative;
+	min-height: 100px;
+	background-color: $background-color;
+	margin-top: 50px;
+	border: 1px solid #0b0c10;
+	@include boxSizing(border-box);
+}
+.formActionGroup:first-child {
+	margin-top: 10px;
+}
+.formActionGroupDelete {
+	color: $white;
+	position: absolute;
+	top: -25px;
+	right: 0;
+	cursor: pointer;
+}
+.formActionGroupDelete:hover {
+	text-decoration: underline;
+}
+#actionList .formSubSection:first-child {
+	margin-top: 40px;
+}
+.formActionTab {
+	@include condensedBold();
+	font-size: 18px;
+	background-color: #0b0c10;
+	text-align: center;
+	position: absolute;
+	top: -30px;
+	left: -1px;
+	padding: 10px;
+	border-radius: 5px 5px 0 0;
+	border: 1px solid #0b0c10;
+}
+.formButtonTab {
+	color: #3498db;
+}
+.formInputTab {
+	color: #2ecc71;
+}
+.formToggleTab {
+	color: #9b59b6;
+}
+#actionListPreview {
+	margin-top: 15px;
+}
+.actionListLeftPreview, .actionListRightPreview{
+	width: 50%;
+	float: left;
+}
+.deviceActionGroup {
+	margin: 30px 0;
+}
+.actionListLeftPreview .deviceActionGroup:first-child, .actionListRightPreview .deviceActionGroup:first-child {
+	margin: 0;
+}
+.actionListLeftPreview .deviceActionGroup:last-child, .actionListRightPreview .deviceActionGroup:last-child {
+	margin-bottom: 15px;
+}
+.actionListCenterPreview {
+	clear: both;
+}
+.actionListCenterPreview .deviceActionGroup {
+	margin: 15px 0 15px 0;
+}
+.deviceActionLabel{
+	@include condensedBold();
+	color: #c5c6c7;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.deviceActionSwitchWrapper{
+	margin: 0 auto;
+	width:30px;
+	margin-bottom: 5px;
+}
+.deviceActionGroup input[type='text']{
+	font-family: 'asap_condensedregular';
+	font-size:15px;
+	width: 75px;
+	display:block;
+	margin: 0 auto;
+	border: none;
+	border-radius: 2px;
+	text-align: center;
+}
+.deviceActionGroup input[type='text']:invalid {
+	background-color: #e74c3c;
 }
