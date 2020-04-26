@@ -521,4 +521,41 @@ select option {
   background-color: #e74c3c;
 }
 
+.initialCallInput {
+  width: 100%;
+  border: none;
+  height: 20px;
+  border-radius: 3px;
+  -webkit-box-sizing: border-box;
+  /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;
+  /* Firefox, other Gecko */
+  box-sizing: border-box;
+  /* Opera/IE 8+ */
+  padding: 0 5px;
+}
+
+.formSave {
+  font-family: "asap_condensedbold";
+  color: #c5c6c7;
+  font-size: 18px;
+}
+
+.formCancel a {
+  font-family: "asap_condensedregular";
+  color: #c5c6c7;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.formAction {
+  float: right;
+  margin-left: 20px;
+}
+
+.formAction:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /*# sourceMappingURL=newdevice.css.map */

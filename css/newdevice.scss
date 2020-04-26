@@ -459,3 +459,30 @@ select option {
 .deviceActionGroup input[type='text']:invalid {
 	background-color: #e74c3c;
 }
+.initialCallInput {
+	width: 100%;
+	border: none;
+	height: 20px;
+	@include borderRadius(3px);
+	@include boxSizing(border-box);
+	padding: 0 5px;
+}
+.formSave {
+	@include condensedBold();
+	color: $white;
+	font-size: 18px;
+}
+.formCancel a {
+	@include condensedRegular();
+	color: $white;
+	font-size: 18px;
+	text-decoration: none;
+}
+.formAction {
+	float: right;
+	margin-left: 20px;
+}
+.formAction:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}

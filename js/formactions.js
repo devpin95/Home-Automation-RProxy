@@ -165,6 +165,7 @@ function load() {
 	document.getElementById("actionCreateToggle").addEventListener("click", function() { buildActionForm(ACTIONTYPES.toggle); });
 	document.getElementById("actionCreateInput").addEventListener("click", function() { buildActionForm(ACTIONTYPES.input); });
 
+	document.getElementById("saveForm").addEventListener("click", saveForm);
 }
 
 function validHexColor(color) {
@@ -222,6 +223,7 @@ function buildMonitorForm() {
 	var formgroup = document.createElement("div");
 	formgroup.classList.add("formMonitorGroup");
 	formgroup.classList.add("formSubSection");
+	formgroup.setAttribute("name", "monitor");
 
 	var formgroupdelete = document.createElement("div");
 	formgroupdelete.classList.add("formMonitorGroupDelete");
@@ -266,6 +268,7 @@ function buildMonitorForm() {
 	var labelInput = document.createElement("input");
 	labelInput.type = "text";
 	labelInput.placeholder = "Label " + monitorAbsCount;
+	labelInput.name = "monitorLabel";
 
 	labelInput.addEventListener("keyup", function(){
 		if ( this.value == "" ) {
@@ -278,6 +281,7 @@ function buildMonitorForm() {
 	var callInput = document.createElement("input");
 	callInput.type = "text";
 	callInput.placeholder = "-";
+	callInput.name = "monitorCall";
 
 	formgroup.appendChild(formgroupdelete);
 	formgroup.appendChild(label1);
@@ -351,6 +355,8 @@ function buildActionForm(type) {
 
 		var formgroup = document.createElement("div");
 		addClassesToElement(formgroup, ['formActionGroup', 'formSubSection', 'actionButton', 'clearfix']);
+		formgroup.setAttribute("name", "action");
+		formgroup.setAttribute("_type", "button");
 
 		formgroup.addEventListener("mouseover", function() {
 			actionEle.label.style.color = "#e67e22";
@@ -395,6 +401,7 @@ function buildActionForm(type) {
 		var actioninput = document.createElement("input");
 		actioninput.type = "text";
 		actioninput.placeholder = "Button " + actionAbsCount;
+		actioninput.name = "actionButtonLabel";
 
 		actioninput.addEventListener("keyup", function(){
 			actionEle.label.innerHTML = this.value;
@@ -408,6 +415,7 @@ function buildActionForm(type) {
 		var valueinput = document.createElement("input");
 		valueinput.type = "text";
 		valueinput.placeholder = "Button " + actionAbsCount;
+		valueinput.name = "actionButtonInput";
 		valueinput.addEventListener("keyup", function() {
 			actionEle.input.value = this.value;
 		})
@@ -429,6 +437,7 @@ function buildActionForm(type) {
 		var callinput = document.createElement("input");
 		callinput.type = "text";
 		callinput.placeholder = "-";
+		callinput.name = "actionButtonCall";
 
 		formgroup.appendChild(tab);
 		formgroup.appendChild(deletebutton);
@@ -464,6 +473,8 @@ function buildActionForm(type) {
 		}
 
 		var formgroup = document.createElement("div");
+		formgroup.setAttribute("name", "action");
+		formgroup.setAttribute("_type", "toggle");
 		addClassesToElement(formgroup, ['formActionGroup', 'formSubSection', 'actionButton', 'clearfix']);
 		formgroup.addEventListener("mouseover", function() {
 			actionEle.label.style.color = "#e67e22";
@@ -507,6 +518,7 @@ function buildActionForm(type) {
 		var actioninput = document.createElement("input");
 		actioninput.type = "text";
 		actioninput.placeholder = "Toggle " + actionAbsCount;
+		actioninput.name = "actionToggleLabel"
 
 		actioninput.addEventListener("keyup", function() {
 			actionEle.label.innerHTML = this.value;
@@ -523,6 +535,7 @@ function buildActionForm(type) {
 		var callinput = document.createElement("input");
 		callinput.type = "text";
 		callinput.placeholder = '-';
+		callinput.name = 'actionToggleCall';
 
 		formgroup.appendChild(tag);
 		formgroup.appendChild(formdelete);
@@ -561,6 +574,8 @@ function buildActionForm(type) {
 
 		var formgroup = document.createElement("div");
 		addClassesToElement(formgroup, ['formActionGroup', 'formSubSection', 'actionButton', 'clearfix']);
+		formgroup.setAttribute("name", "action");
+		formgroup.setAttribute("_type", "input");
 		formgroup.addEventListener("mouseover", function() {
 			actionEle.label.style.color = "#e67e22";
 		}, true);
@@ -603,6 +618,7 @@ function buildActionForm(type) {
 		var actioninput = document.createElement("input");
 		actioninput.type = "text";
 		actioninput.placeholder = "Input " + actionAbsCount;
+		actioninput.name = "actionInputLabel";
 
 		actioninput.addEventListener("keyup", function() {
 			actionEle.label.innerHTML = this.value;
@@ -619,6 +635,7 @@ function buildActionForm(type) {
 		var patterninput = document.createElement("input");
 		patterninput.type = "text";
 		patterninput.placeholder = "*";
+		patterninput.name = "actionInputPattern";
 
 		patterninput.addEventListener("keyup", function() {
 			actionEle.input.pattern = this.value;
@@ -636,6 +653,7 @@ function buildActionForm(type) {
 		var callinput = document.createElement("input");
 		callinput.type = "text";
 		callinput.placeholder = '-';
+		callinput.name = "actionInputCall"
 
 		formgroup.appendChild(tag);
 		formgroup.appendChild(formdelete);
@@ -813,4 +831,70 @@ function rearangeActions(skip) {
 
 		++count;
 	}
+}
+
+function saveForm() {
+	var json = {};
+
+	json.initialCall = document.getElementById("initialCall").value;
+
+	json.header = {};
+	json.header.name = document.getElementById("actionBarHeaderName").value;
+	json.header.color = document.getElementById("actionBarHeaderColor").value;
+	json.header.displayHighLevel = document.getElementById("highLevelDataCheckbox").getAttribute("checked");
+
+	if ( json.header.displayHighLevel == "true" ) {
+		json.header.highlevel = {};
+		json.header.highlevel.type = document.getElementById("highLevelDataOptions").value;
+
+		json.header.highlevel.options = {};
+		if ( json.header.highlevel.type == "message" ) {
+			json.header.highlevel.options.call = document.getElementById("HighLevelDataMessageCall").value;
+		} 
+		else if ( json.header.highlevel.type == "toggle" ) {
+			json.header.highlevel.options.offLabel = document.getElementById("highLevelDataToggleLabelOff").value;
+			json.header.highlevel.options.onLabel = document.getElementById("highLevelDataToggleLabelOn").value;
+			json.header.highlevel.options.call = document.getElementById("highLevelDataToggleCall").value;
+		}
+		else if ( json.header.highlevel.type == "push" ) {
+			json.header.highlevel.options.value = document.getElementById("highLevelDataButtonText").value;
+			json.header.highlevel.options.call = document.getElementById("highLevelDataButtonCall").value;
+		}
+	}
+
+	json.monitors = [];
+	var monitors = document.getElementsByName("monitor");
+	for ( var i = 0; i < monitors.length; ++i ) {
+		//querySelectorAll
+		var monitor = {}
+		monitor.label = monitors[i].querySelector("input[name='monitorLabel']").value;
+		monitor.call = monitors[i].querySelector("input[name='monitorCall']").value;
+		json.monitors.push(monitor);
+	}
+
+	json.actions = [];
+	var actions = document.getElementsByName("action");
+	for ( var i = 0; i < actions.length; ++i ) {
+		var action = {};
+		action.type = actions[i].getAttribute("_type");
+
+		if ( action.type == "button" ) {
+			action.call = actions[i].querySelector("input[name='actionButtonCall']").value;
+			action.value = actions[i].querySelector("input[name='actionButtonInput']").value;
+			action.label = actions[i].querySelector("input[name='actionButtonLabel']").value;
+		}
+		else if ( action.type == "toggle" ) {
+			action.call = actions[i].querySelector("input[name='actionToggleCall']").value;
+			action.label = actions[i].querySelector("input[name='actionToggleLabel']").value;
+		}
+		else if ( action.type == "input" ) {
+			action.call = actions[i].querySelector("input[name='actionInputCall']").value;
+			action.label = actions[i].querySelector("input[name='actionInputLabel']").value;
+			action.pattern = actions[i].querySelector("input[name='actionInputPattern']").value;
+		}
+
+		json.actions.push(action);
+	}
+
+	console.log(JSON.stringify(json));
 }

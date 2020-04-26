@@ -12,6 +12,14 @@
 	<div class="mainWrapper clearfix">
 		<div class="deviceMetadataWrapper">
 			<h1 class="mainHeader">New Device</h1>
+
+			<div id="" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Initial Call</h2>
+					<input id="initialCall" type="text" value="" placeholder="Call" class="initialCallInput">
+				</div>
+			</div>
+
 			<div id="deviceMetadata" class="formSection">
 				<div class="formGroup clearfix">
 					<h2 class="sectionTitle">Action Bar</h2>
@@ -36,7 +44,7 @@
 					<div  id="highLevelDataSection">
 						<div class="formSubSection" id="HighLevelDataMessage">
 							Call<br/>
-							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
+							<input id="HighLevelDataMessageCall" type="text" name="deviceTitle" value="" placeholder="-">
 						</div>
 						<div class="formSubSection" id="HighLevelDataToggle">
 							Label (Off)<br/>
@@ -44,13 +52,13 @@
 							Label (On)<br/>
 							<input id="highLevelDataToggleLabelOn" type="text" name="deviceTitle" value="" placeholder="Label">
 							Call<br/>
-							<input id="" type="text" name="deviceTitle" placeholder="-">
+							<input id="highLevelDataToggleCall" type="text" name="deviceTitle" placeholder="-">
 						</div>
 						<div class="formSubSection" id="HighLevelDataPushButton">
 							Button Text<br/>
 							<input id="highLevelDataButtonText" type="text" name="deviceTitle" value="" placeholder="Button">
 							Call<br/>
-							<input id="" type="text" name="deviceTitle" placeholder="-">
+							<input id="highLevelDataButtonCall" type="text" name="deviceTitle" placeholder="-">
 						</div>
 					</div>
 				</div>
@@ -73,45 +81,12 @@
 					<div class="actionCreate" id="actionCreateInput">+ Input&nbsp;</div>
 					<div class="actionCreate" id="actionCreateToggle">+ Toggle&nbsp;</div>
 					<br/>
-					<div id="actionList">
-						<!-- <div class="formActionGroup formSubSection actionButton clearfix">
-							<div class="formActionTab formButtonTab">Button</div>
-							<div class="formActionGroupDelete">delete</div>
-							<label>Action Label</label>
-							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
-							<label>Value</label>
-							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
-							<label>Call</label>
-							<input id="" type="text" name="deviceTitle" placeholder="-">
-						</div>
-
-							<div class="formActionGroup formSubSection actionButton">
-								<div class="formActionTab formInputTab">Input</div>
-								<div class="formActionGroupDelete">delete</div>
-								<label>Action Label</label>
-								<input id="" type="text" name="deviceTitle" value="" placeholder="-">
-								<label>Placeholder Text</label>
-								<input id="" type="text" name="deviceTitle" value="" placeholder="-">
-								<label>Validation</label>
-								<input id="" type="text" name="deviceTitle" value="" placeholder="Regex">
-								<label>Call</label>
-								<input id="" type="text" name="deviceTitle" placeholder="-">
-							</div>
-
-						<div class="formActionGroup formSubSection actionButton">
-							<div class="formActionTab formToggleTab">Toggle</div>
-							<div class="formActionGroupDelete">delete</div>
-							<label>Action Label</label>
-							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
-							<label>Label (off)</label>
-							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
-							<label>Label (on)</label>
-							<input id="" type="text" name="deviceTitle" value="" placeholder="-">
-							<label>Call</label>
-							<input id="" type="text" name="deviceTitle" placeholder="-">
-						</div> -->
-					</div>
+					<div id="actionList"></div>
 				</div>
+			</div>
+			<div id="" class="">
+				<div id="saveForm" class="formSave formAction">Save</div>
+				<div class="formCancel formAction"><a href="index.html">Cancel</a></div>
 			</div>
 		</div>
 
