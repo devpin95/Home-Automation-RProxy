@@ -159,17 +159,82 @@ function load() {
 		document.getElementById("deviceButtonPreview").value = this.value;
 	});
 
-	document.getElementById("monitorCreate").addEventListener("click", buildMonitorForm);
+	document.getElementById("monitorCreate").addEventListener("click", function(){buildMonitorForm()});
 
 	document.getElementById("actionCreateButton").addEventListener("click", function() { buildActionForm(ACTIONTYPES.button); });
 	document.getElementById("actionCreateToggle").addEventListener("click", function() { buildActionForm(ACTIONTYPES.toggle); });
 	document.getElementById("actionCreateInput").addEventListener("click", function() { buildActionForm(ACTIONTYPES.input); });
 
 	document.getElementById("saveForm").addEventListener("click", saveForm);
+	document.getElementById("jsonCopy").addEventListener("click", function() {
+		document.getElementById("jsonObj").select();
+		document.execCommand("copy");
+		this.innerHTML = "Copied!";
+		document.getElementById("jsonCopy").style.color = "#2ecc71";
+		setTimeout( function() {
+			document.getElementById("jsonCopy").innerHTML = "Copy JSON";
+			document.getElementById("jsonCopy").style.color = "#c5c6c7";
+		}, 3000);
+	});
+
+	// check if we are editing
+	const urlParams = new URLSearchParams(window.location.search);
+	const myParam = urlParams.get('editing');
+	if ( myParam == 'true' ) {
+		console.log("editing " + sessionStorage.device);
+
+		var activeDevice = null;
+		var json = JSON.parse(localStorage.devices);
+		for ( var i = 0; i < json.devices.length; ++i ) {
+			if ( json.devices[i].header.name == sessionStorage.device ) {
+				activeDevice = json.devices[i];
+				break;
+			}
+		}
+
+		console.log(activeDevice);
+
+		document.getElementById("initialCall").value = activeDevice.initialCall;
+		document.getElementById("actionBarHeaderName").value = activeDevice.header.name;
+		triggerEvent(document.getElementById("actionBarHeaderName"), "keyup");
+		document.getElementById("actionBarHeaderColor").value = activeDevice.header.color;
+		triggerEvent(document.getElementById("actionBarHeaderColor"), "keyup");
+
+		if ( activeDevice.header.displayHighLevel == true ) {
+			document.getElementById("highLevelDataCheckbox").checked = "true";
+			document.getElementById("highLevelDataOptions").value = activeDevice.header.highlevel.type;
+			triggerEvent(document.getElementById("highLevelDataOptions"), "change");
+
+			if ( activeDevice.header.highlevel.type == "message" ) {
+
+			}
+			else if ( activeDevice.header.highlevel.type == "toggle" ) {
+				document.getElementById("highLevelDataToggleLabelOff").value = activeDevice.header.highlevel.options.offLabel;
+				document.getElementById("highLevelDataToggleLabelOn").value = activeDevice.header.highlevel.options.onLabel;
+				document.getElementById("highLevelDataToggleCall").value = activeDevice.header.highlevel.options.call;
+				triggerEvent(document.getElementById("highLevelDataToggleLabelOff"), "keyup");
+				triggerEvent(document.getElementById("highLevelDataToggleLabelOn"), "keyup");
+			}
+		} 
+		else {
+			document.getElementById("highLevelDataCheckbox").checked = "false";
+			document.getElementById("highLevelDataOptions").value = activeDevice.header.highlevel.type;
+			triggerEvent(document.getElementById("highLevelDataOptions"), "change");
+		}
+
+		for ( var i = 0; i < activeDevice.monitors.length; ++i ) {
+			buildMonitorForm(activeDevice.monitors[i]);
+		}
+
+		for ( var i = 0; i < activeDevice.actions.length; ++i ) {
+			buildActionForm(activeDevice.actions[i].type, activeDevice.actions[i]);
+			console.log(activeDevice.actions[i]);
+		}
+	}
 }
 
 function validHexColor(color) {
-	var validChars = ['0', '1', '2', '3', '4', '5', '6', 'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F', '#'];
+	var validChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F', '#'];
 	for ( var i = 0; i < color.length; ++i ) {
 		if ( !validChars.includes(color[i]) ) {
 			return {valid: false};
@@ -198,7 +263,7 @@ function addClassesToElement(ele, classes) {
 }
 
 
-function buildMonitorForm() {
+function buildMonitorForm(fill=null) {
 	/**
 	<div class="formMonitorGroup formSubSection">
 		<div class="formMonitorGroupDelete">delete</div>
@@ -297,6 +362,12 @@ function buildMonitorForm() {
 	}, true)
 
 	document.getElementById("monitorList").appendChild(formgroup);
+
+	if ( fill !== null ) {
+		labelInput.value = fill.label;
+		callInput.value = fill.call;
+		triggerEvent(labelInput, "keyup");
+	}
 }
 
 function buildMonitor() {
@@ -315,7 +386,7 @@ function buildMonitor() {
 	}
 }
 
-function buildActionForm(type) {
+function buildActionForm(type, fill=null) {
 
 	var actionList = document.getElementById("actionList");
 	var leftList = document.getElementById("actionListLeft");
@@ -449,6 +520,14 @@ function buildActionForm(type) {
 		formgroup.appendChild(callinput);
 		actionList.appendChild(formgroup);
 
+		if ( fill != null ) {
+			actioninput.value = fill.label;
+			valueinput.value = fill.value;
+			callinput.value = fill.call;
+			triggerEvent(actioninput, "keyup");
+			triggerEvent(valueinput, "keyup");
+		}
+
 	}
 	else if ( type == ACTIONTYPES.toggle ) 
 	{
@@ -545,6 +624,12 @@ function buildActionForm(type) {
 		formgroup.appendChild(callinput);
 
 		actionList.appendChild(formgroup);
+
+		if ( fill != null ) {
+			actioninput.value = fill.label;
+			callinput.value = fill.call;
+			triggerEvent(actioninput, "keyup");
+		}
 	}
 	else if ( type == ACTIONTYPES.input )
 	{
@@ -665,6 +750,14 @@ function buildActionForm(type) {
 		formgroup.appendChild(callinput);
 
 		actionList.appendChild(formgroup);
+
+		if ( fill != null ) {
+			actioninput.value = fill.label;
+			patterninput.value = fill.pattern;
+			callinput.value = fill.call;
+			triggerEvent(actioninput, "keyup");
+			triggerEvent(patterninput, "keyup");
+		}
 	}
 }
 
@@ -835,26 +928,35 @@ function rearangeActions(skip) {
 
 function saveForm() {
 	var json = {};
+	var expected = {};
+	var needInit = true;
 
 	json.initialCall = document.getElementById("initialCall").value;
+	if (json.initialCall == "") {
+		needInit = false;
+	}
 
 	json.header = {};
 	json.header.name = document.getElementById("actionBarHeaderName").value;
 	json.header.color = document.getElementById("actionBarHeaderColor").value;
-	json.header.displayHighLevel = document.getElementById("highLevelDataCheckbox").getAttribute("checked");
+	json.header.displayHighLevel = document.getElementById("highLevelDataCheckbox").getAttribute("checked") == 'true';
 
-	if ( json.header.displayHighLevel == "true" ) {
+	if ( json.header.displayHighLevel == true ) {
 		json.header.highlevel = {};
 		json.header.highlevel.type = document.getElementById("highLevelDataOptions").value;
 
 		json.header.highlevel.options = {};
 		if ( json.header.highlevel.type == "message" ) {
 			json.header.highlevel.options.call = document.getElementById("HighLevelDataMessageCall").value;
+			expected.highlevel = {};
+			expected.highlevel.value = "STRING";
 		} 
 		else if ( json.header.highlevel.type == "toggle" ) {
 			json.header.highlevel.options.offLabel = document.getElementById("highLevelDataToggleLabelOff").value;
 			json.header.highlevel.options.onLabel = document.getElementById("highLevelDataToggleLabelOn").value;
 			json.header.highlevel.options.call = document.getElementById("highLevelDataToggleCall").value;
+			expected.highlevel = {};
+			expected.highlevel.state = "BOOLEAN";
 		}
 		else if ( json.header.highlevel.type == "push" ) {
 			json.header.highlevel.options.value = document.getElementById("highLevelDataButtonText").value;
@@ -864,16 +966,24 @@ function saveForm() {
 
 	json.monitors = [];
 	var monitors = document.getElementsByName("monitor");
+	if ( monitors.length > 0 ) {
+		expected.monitors = {};
+	}
 	for ( var i = 0; i < monitors.length; ++i ) {
 		//querySelectorAll
 		var monitor = {}
+		var expectedM = {}
 		monitor.label = monitors[i].querySelector("input[name='monitorLabel']").value;
 		monitor.call = monitors[i].querySelector("input[name='monitorCall']").value;
 		json.monitors.push(monitor);
+		expected.monitors[monitor.label] = "STRING | NUMBER | BOOLEAN";
 	}
 
 	json.actions = [];
 	var actions = document.getElementsByName("action");
+	if ( actions.length > 0 ) {
+		expected.actions = {};
+	}
 	for ( var i = 0; i < actions.length; ++i ) {
 		var action = {};
 		action.type = actions[i].getAttribute("_type");
@@ -886,15 +996,47 @@ function saveForm() {
 		else if ( action.type == "toggle" ) {
 			action.call = actions[i].querySelector("input[name='actionToggleCall']").value;
 			action.label = actions[i].querySelector("input[name='actionToggleLabel']").value;
+			expected.actions[action.label] = "BOOLEAN";
 		}
 		else if ( action.type == "input" ) {
 			action.call = actions[i].querySelector("input[name='actionInputCall']").value;
 			action.label = actions[i].querySelector("input[name='actionInputLabel']").value;
 			action.pattern = actions[i].querySelector("input[name='actionInputPattern']").value;
+			expected.actions[action.label] = "STRING";
 		}
 
 		json.actions.push(action);
 	}
 
+	if ( needInit ) {
+		document.getElementById("deviceForm").style.display = "none";
+		document.getElementById("jsonExpected").classList.remove("hide");
+		document.getElementById("jsonObj").innerHTML = JSON.stringify(expected, undefined, 4);
+		document.getElementById("jsonObj").style.height = document.getElementById("jsonObj").scrollHeight + "px";
+		document.getElementById("jsonObj").style.minHeight = document.getElementById("jsonObj").scrollHeight + "px";
+		document.getElementById("jsonObj").style.maxHeight = document.getElementById("jsonObj").scrollHeight + "px";
+	} else {
+		document.getElementById("jsonInstruct").innerHTML = "No initial call provided."
+		document.getElementById("deviceForm").style.display = "none";
+		document.getElementById("jsonObj").style.display = "none";
+		document.getElementById("jsonCopy").style.display = "none";
+		document.getElementById("jsonExpected").classList.remove("hide");
+		document.getElementById("backHome").style.float = "left";
+	}
+
 	console.log(JSON.stringify(json));
+}
+
+function triggerEvent(el, type) {
+	if ('createEvent' in document) {
+        // modern browsers, IE9+
+	    var e = document.createEvent('HTMLEvents');
+	    e.initEvent(type, false, true);
+	    el.dispatchEvent(e);
+	} else {
+	    // IE 8
+	    var e = document.createEventObject();
+	    e.eventType = type;
+	    el.fireEvent('on'+e.eventType, e);
+	}
 }

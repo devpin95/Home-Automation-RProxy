@@ -558,4 +558,51 @@ select option {
   text-decoration: underline;
 }
 
+#jsonExpected {
+  color: #c5c6c7;
+  font-family: monospace;
+}
+
+#jsonExpected p {
+  font-family: "asap_condensedregular";
+  margin-bottom: 15px;
+}
+
+#jsonCopy {
+  float: left;
+  font-family: "asap_condensedbold";
+  margin-bottom: 10px;
+}
+
+#jsonObj {
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  background-color: transparent;
+  color: #c5c6c7;
+  border: none;
+  resize: none;
+  margin-bottom: 15px;
+}
+
+#jsonCopy:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#backHome {
+  float: left;
+}
+
+#jsonExpected a {
+  font-family: "asap_condensedregular";
+  font-size: 15px;
+  color: #45a29e;
+  text-decoration: none;
+}
+
+#jsonExpected a:hover {
+  text-decoration: underline;
+}
+
 /*# sourceMappingURL=newdevice.css.map */

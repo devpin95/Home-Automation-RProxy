@@ -486,3 +486,42 @@ select option {
 	cursor: pointer;
 	text-decoration: underline;
 }
+#jsonExpected {
+	color: $white;
+	font-family: monospace;
+}
+#jsonExpected p {
+	@include condensedRegular();
+	margin-bottom:15px;
+}
+#jsonCopy {
+	float: left;
+	@include condensedBold();
+	margin-bottom: 10px;
+}
+#jsonObj {
+	width: 100%;
+	min-width: 100%;
+	max-width: 100%;
+	background-color: transparent;
+	color: $white;
+	border: none;
+	resize: none;
+	margin-bottom: 15px;
+}
+#jsonCopy:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+#backHome {
+	float: left;
+}
+#jsonExpected a{
+	@include condensedRegular();
+	font-size: 15px;
+	color: #45a29e;
+	text-decoration: none;
+}
+#jsonExpected a:hover{
+	text-decoration: underline;
+}

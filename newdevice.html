@@ -10,7 +10,7 @@
 
 <body onload="load()">
 	<div class="mainWrapper clearfix">
-		<div class="deviceMetadataWrapper">
+		<div id="deviceForm" class="deviceMetadataWrapper">
 			<h1 class="mainHeader">New Device</h1>
 
 			<div id="" class="formSection">
@@ -88,6 +88,14 @@
 				<div id="saveForm" class="formSave formAction">Save</div>
 				<div class="formCancel formAction"><a href="index.html">Cancel</a></div>
 			</div>
+		</div>
+
+		<div id="jsonExpected" class="deviceMetadataWrapper hide">
+			<h1 class="mainHeader">INIT Response</h1>
+			<p id="jsonInstruct">A JSON object with this information is expected on device init response:</p>
+			<div id="jsonCopy">Copy JSON</div>
+			<textarea id="jsonObj" spellcheck="false"></textarea>
+			<div id="backHome"><a href="index.html">&#x2190;&nbsp;&nbsp;&nbsp;Back to Devices</a></div>
 		</div>
 
 		<div class="devicePreviewWrapper">

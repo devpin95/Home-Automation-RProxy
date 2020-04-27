@@ -135,8 +135,12 @@ input:checked + .slider:before {
 	font-size: 25px;
 	float:left;
 }
+.deviceTitle:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
 .deviceHighLevel {
-	float: right;
+	float: right;	
 	font-size: 15px;
 	color: #c5c6c7;
 	padding-top: 6px;
@@ -152,7 +156,6 @@ input:checked + .slider:before {
 .deviceList .device:first-child {
 	margin-top:0;
 }
-
 
 .deviceMonitors {
 	background-color: #0b0c10;
@@ -230,10 +233,13 @@ input:checked + .slider:before {
 	border-radius: 2px;
 	text-align: center;
 }
-.deviceActionGroup input[type='button']{
-	font-family: 'asap_condensedsemibold';
+.deviceActionGroup input[type='text']:invalid {
+	background-color: #e74c3c;
+}
+input[type='button']{
+	font-family: 'asap_condensedregular';
 	font-size:15px;
-	color: #0b0c10;
+	color: #45a29e;
 	width: 75px;
 	display:block;
 	margin: 0 auto;
@@ -241,13 +247,15 @@ input:checked + .slider:before {
 	border: none;
 	border-radius: 3px;
 	text-align: center;
-	background-color: #45a29e;
+	background: rgb(31,40,51);
+	background: linear-gradient(0deg, rgba(31,40,51,1) 0%, rgba(47,60,77,1) 100%);
 	border-bottom: 1px solid #2f3c4d;
 	-webkit-box-shadow: 0px 2px 2px 1px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.75);
-	box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
+	box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.75);
 	cursor: pointer;
 }
-.deviceActionGroup input[type='button']:active{
-	opacity: .5;
+input[type='button']:active{
+	background: rgb(31,40,51);
+	background: linear-gradient(180deg, rgba(31,40,51,1) 0%, rgba(47,60,77,1) 100%);
 }
