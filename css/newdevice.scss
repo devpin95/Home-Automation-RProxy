@@ -140,6 +140,7 @@ input[type='button']{
 	-moz-box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.75);
 	box-shadow: 0px 1px 5px 1px rgba(0,0,0,0.75);
 	cursor: pointer;
+	outline: none;
 }
 input[type='button']:active{
 	opacity: .5;
@@ -529,8 +530,17 @@ select option {
 	text-decoration: underline;
 	cursor: pointer;
 }
-#backHome {
+#backHome, .backHome {
 	float: left;
+}
+.backHome a{
+	@include condensedRegular();
+	font-size: 15px;
+	color: #45a29e;
+	text-decoration: none;
+}
+.backHome:hover a{
+	text-decoration: underline;
 }
 #jsonExpected a{
 	@include condensedRegular();
@@ -540,4 +550,7 @@ select option {
 }
 #jsonExpected a:hover{
 	text-decoration: underline;
+}
+#deleteForm {
+	color: #e74c3c;
 }

@@ -256,6 +256,11 @@ function load() {
 			buildActionForm(activeDevice.actions[i].type, activeDevice.actions[i]);
 			console.log(activeDevice.actions[i]);
 		}
+
+		document.getElementById("deleteForm").classList.remove("hide");
+		document.getElementById("deleteForm").addEventListener("click", function() {
+			alert("DELETE " + sessionStorage.device);
+		})
 	}
 }
 
