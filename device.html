@@ -10,8 +10,11 @@
 
 <body onload="load()">
 	<div class="mainWrapper clearfix">
+		<div class="mainActions clearfix">
+			<h1 id="newDeviceTab" class="mainHeader mainHeaderActive">New Device</h1>
+			<h1 id="jsonTab" class="mainHeader mainHeaderUnactive hide">JSON</h1>
+		</div>
 		<div id="deviceForm" class="deviceMetadataWrapper">
-			<h1 class="mainHeader">New Device</h1>
 
 			<div id="" class="formSection">
 				<div class="formGroup clearfix">
@@ -91,7 +94,6 @@
 		</div>
 
 		<div id="jsonExpected" class="deviceMetadataWrapper hide">
-			<h1 class="mainHeader">INIT Response</h1>
 			<p id="jsonInstruct">A JSON object with this information is expected on device init response:</p>
 			<div id="jsonCopy">Copy JSON</div>
 			<textarea id="jsonObj" spellcheck="false"></textarea>

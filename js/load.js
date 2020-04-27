@@ -17,14 +17,15 @@ function load() {
 function getDeviceList() {
 
 	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange=function() {
+	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var json = JSON.parse(this.responseText);
-			localStorage.setItem("devices", json);
-			buildDeviceList(localStorage.deveices);
+			// console.log(json);
+			localStorage.setItem("devices", this.responseText);
+			buildDeviceList(JSON.parse(localStorage.devices));
 		}
 	};
-	xhttp.open("GET", "", false);
+	xhttp.open("GET", "https://hap-api.herokuapp.com/devices", true);
 	xhttp.setRequestHeader("Content-Type", "application/json");
 	xhttp.send();
 
@@ -34,6 +35,7 @@ function getDeviceList() {
 }
 
 function buildDeviceList(json) {
+	console.log(json);
 
 	var deviceList = document.getElementById("device_list");
 
@@ -74,7 +76,7 @@ function buildDeviceList(json) {
 			deviceTitle.innerHTML = json.devices[i].header.name;
 			deviceTitle.addEventListener("click", function() {
 				sessionStorage.setItem("device", this.innerHTML);
-				window.location.href = "newdevice.html?editing=true";
+				window.location.href = "device.html?editing=true";
 			})
 
 			if ( json.devices[i].header.color == "" ) {

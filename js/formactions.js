@@ -181,7 +181,33 @@ function load() {
 	const urlParams = new URLSearchParams(window.location.search);
 	const myParam = urlParams.get('editing');
 	if ( myParam == 'true' ) {
-		console.log("editing " + sessionStorage.device);
+		// console.log("editing " + sessionStorage.device);
+
+		document.getElementById("newDeviceTab").innerHTML = "Device";
+		document.getElementById("newDeviceTab")
+		document.getElementById("jsonTab").classList.remove("hide");
+
+		document.getElementById("newDeviceTab").addEventListener("click", function() {
+			document.getElementById("jsonTab").classList.remove("mainHeaderActive");
+			document.getElementById("jsonTab").classList.add("mainHeaderUnactive");
+			this.classList.remove("mainHeaderUnactive");
+			this.classList.add("mainHeaderActive");
+
+			document.getElementById("jsonExpected").classList.add("hide");
+			document.getElementById("deviceForm").classList.remove("hide");
+		});
+
+		document.getElementById("jsonTab").addEventListener("click", function() {
+			document.getElementById("newDeviceTab").classList.remove("mainHeaderActive");
+			document.getElementById("newDeviceTab").classList.add("mainHeaderUnactive");
+			this.classList.remove("mainHeaderUnactive");
+			this.classList.add("mainHeaderActive");
+
+			document.getElementById("jsonExpected").classList.remove("hide");
+			document.getElementById("deviceForm").classList.add("hide");
+
+			saveForm(false);
+		});
 
 		var activeDevice = null;
 		var json = JSON.parse(localStorage.devices);
@@ -926,7 +952,7 @@ function rearangeActions(skip) {
 	}
 }
 
-function saveForm() {
+function saveForm(save=true) {
 	var json = {};
 	var expected = {};
 	var needInit = true;
@@ -1009,22 +1035,28 @@ function saveForm() {
 	}
 
 	if ( needInit ) {
-		document.getElementById("deviceForm").style.display = "none";
-		document.getElementById("jsonExpected").classList.remove("hide");
+		if ( save ) {
+			document.getElementById("deviceForm").classList.add("hide");
+			document.getElementById("jsonExpected").classList.remove("hide");
+		}
 		document.getElementById("jsonObj").innerHTML = JSON.stringify(expected, undefined, 4);
 		document.getElementById("jsonObj").style.height = document.getElementById("jsonObj").scrollHeight + "px";
 		document.getElementById("jsonObj").style.minHeight = document.getElementById("jsonObj").scrollHeight + "px";
 		document.getElementById("jsonObj").style.maxHeight = document.getElementById("jsonObj").scrollHeight + "px";
 	} else {
+		if ( save ) {
+			document.getElementById("deviceForm").classList.add("hide");
+			document.getElementById("jsonExpected").classList.remove("hide");
+		}
 		document.getElementById("jsonInstruct").innerHTML = "No initial call provided."
-		document.getElementById("deviceForm").style.display = "none";
 		document.getElementById("jsonObj").style.display = "none";
 		document.getElementById("jsonCopy").style.display = "none";
-		document.getElementById("jsonExpected").classList.remove("hide");
 		document.getElementById("backHome").style.float = "left";
 	}
 
-	console.log(JSON.stringify(json));
+	if ( save ) {
+		console.log(JSON.stringify(json));
+	}
 }
 
 function triggerEvent(el, type) {
