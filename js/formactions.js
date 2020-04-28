@@ -1005,6 +1005,8 @@ function saveForm(save=true) {
 		var monitor = {}
 		var expectedM = {}
 		monitor.label = monitors[i].querySelector("input[name='monitorLabel']").value;
+		if ( monitor.label == "" ) monitor.label = monitors[i].querySelector("input[name='monitorLabel']").getAttribute("placeholder");
+		monitor.label = cleanValue(monitor.label);
 		monitor.call = monitors[i].querySelector("input[name='monitorCall']").value;
 		json.monitors.push(monitor);
 		expected.monitors[monitor.label] = "STRING | NUMBER | BOOLEAN";
@@ -1023,15 +1025,21 @@ function saveForm(save=true) {
 			action.call = actions[i].querySelector("input[name='actionButtonCall']").value;
 			action.value = actions[i].querySelector("input[name='actionButtonInput']").value;
 			action.label = actions[i].querySelector("input[name='actionButtonLabel']").value;
+			if ( action.label == "" ) action.label = actions[i].querySelector("input[name='actionButtonInput']").getAttribute("placeholder");
+			action.label = cleanValue(action.label);
 		}
 		else if ( action.type == "toggle" ) {
 			action.call = actions[i].querySelector("input[name='actionToggleCall']").value;
 			action.label = actions[i].querySelector("input[name='actionToggleLabel']").value;
+			if ( action.label == "" ) action.label = actions[i].querySelector("input[name='actionToggleLabel']").getAttribute("placeholder");
+			action.label = cleanValue(action.label);
 			expected.actions[action.label] = "BOOLEAN";
 		}
 		else if ( action.type == "input" ) {
 			action.call = actions[i].querySelector("input[name='actionInputCall']").value;
 			action.label = actions[i].querySelector("input[name='actionInputLabel']").value;
+			if ( action.label == "" ) action.label = actions[i].querySelector("input[name='actionInputLabel']").getAttribute("placeholder");
+			action.label = cleanValue(action.label);
 			action.pattern = actions[i].querySelector("input[name='actionInputPattern']").value;
 			expected.actions[action.label] = "STRING";
 		}
@@ -1060,7 +1068,7 @@ function saveForm(save=true) {
 	}
 
 	if ( save ) {
-		console.log(JSON.stringify(json));
+		submitDevice(json);
 	}
 }
 
@@ -1076,4 +1084,21 @@ function triggerEvent(el, type) {
 	    e.eventType = type;
 	    el.fireEvent('on'+e.eventType, e);
 	}
+}
+
+function cleanValue(string) {
+	return string.replace(/[^\w\s]/gi, '').replace(/\s+/g,' ').replace(/ /g, "_").toLowerCase();
+}
+
+function submitDevice( device ) {
+	console.log(JSON.stringify(device));
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+		}
+	};
+	xhttp.open("POST", "https://hap-api.herokuapp.com/devices", true);
+	// xhttp.setRequestHeader("Content-Type", "application/json");
+	xhttp.send(JSON.stringify(device));
 }

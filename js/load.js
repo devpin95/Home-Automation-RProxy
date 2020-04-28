@@ -4,6 +4,11 @@ var ACTIONTYPES = {
 	toggle: "toggle",
 	input: "input"
 };
+var HIGHLEVELTYPES = {
+	button: "push",
+	toggle: "toggle",
+	input: "input"
+};
 
 function load() {
 	var deviceListJson = getDeviceList();
@@ -19,6 +24,7 @@ function getDeviceList() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("loading").classList.add("hide");
 			var json = JSON.parse(this.responseText);
 			// console.log(json);
 			localStorage.setItem("devices", this.responseText);
@@ -86,45 +92,55 @@ function buildDeviceList(json) {
 			}
 
 			if ( json.devices[i].header.displayHighLevel == true ) {
+
+				var highLevelWrapper = document.createElement("div");
+				highLevelWrapper.setAttribute("name", "highlevel");
+
+
 				// Status message
 				if ( json.devices[i].header.highlevel.type == "status" ) 
 				{
+					highLevelWrapper.setAttribute("_type", "status");
 					var status = document.createElement("div");
+					status.name = "highlevel";
 					status.classList.add("deviceHighLevel");
 					status.innerHTML = "-";
 
-					deviceHeader.appendChild(status);
+					highLevelWrapper.appendChild(status);
+					deviceHeader.appendChild(highLevelWrapper);
 				}
 
 				// toggle button
 				else if ( json.devices[i].header.highlevel.type == "toggle" ) 
 				{
-					var highlevel = document.createElement("div");
-					highlevel.classList.add("deviceHighLevel");
+					highLevelWrapper.classList.add("deviceHighLevel");
+					highLevelWrapper.setAttribute("_type", "toggle");
 
 					var label = document.createElement("div");
 					label.innerHTML = json.devices[i].header.highlevel.options.onLabel;
 					label.classList.add("highLevelToggleLabel");
 					var toggle = buildToggleButton(json.devices[i].header.highlevel.options);
+					toggle.name = "highlevel";
 
-					highlevel.appendChild(label);
-					highlevel.appendChild(toggle);
-					deviceHeader.appendChild(highlevel);
+					highLevelWrapper.appendChild(label);
+					highLevelWrapper.appendChild(toggle);
+					deviceHeader.appendChild(highLevelWrapper);
 				}
 
 				// push button
 				else if ( json["devices"][i]["header"]["highlevel"]["type"] == "push" ) 
 				{
-					var highlevel = document.createElement("div");
-					highlevel.classList.add("deviceHighLevel");
+					highLevelWrapper.setAttribute("_type", "push");
+					highLevelWrapper.classList.add("deviceHighLevel");
 
 					var button = document.createElement("input");
 					button.type = "button";
 					button.value = json.devices[i].header.highlevel.options.value;
+					button.name = "highlevel";
 					button.setAttribute("_call", json.devices[i].header.highlevel.options.call)
 
-					highlevel.appendChild(button);
-					deviceHeader.appendChild(highlevel);
+					highLevelWrapper.appendChild(button);
+					deviceHeader.appendChild(highLevelWrapper);
 				}
 			}
 
@@ -147,7 +163,8 @@ function buildDeviceList(json) {
 					label_column.innerHTML = json.devices[i].monitors[j].label;
 
 					var value_column = document.createElement("th");
-					value_column.innerHTML = json.devices[i].monitors[j].call;
+					value_column.innerHTML = '-';
+					value_column.setAttribute("name", cleanValue(json.devices[i].monitors[j].label));
 
 					
 					var call = json.devices[i].monitors[j].call;
@@ -155,7 +172,7 @@ function buildDeviceList(json) {
 
 					(function(call, interval, column){
 						setInterval( function(){
-							column.innerHTML = "1000";
+							column.innerHTML = "GET on " + call;
 						}, interval * 60000 );
 					})(call, interval, value_column);
 
@@ -172,6 +189,7 @@ function buildDeviceList(json) {
 				var actionList = document.createElement("div");
 				actionList.classList.add("deviceActions");
 				actionList.classList.add("clearfix");
+				actionList.setAttribute("_name", "ActionList");
 
 				var leftList = document.createElement("div");
 				leftList.classList.add("deviceActionsLeft");
@@ -182,6 +200,8 @@ function buildDeviceList(json) {
 				var count = 0;
 				for ( var j = 0; j < json.devices[i].actions.length; ++j ) {
 					var action = buildAction(json.devices[i].actions[j])
+					action.parent.setAttribute("name", cleanValue(json.devices[i].actions[j].label));
+					action.parent.setAttribute("_type", cleanValue(json.devices[i].actions[j].type));
 
 					if ( count % 2 == 0 ) {
 						leftList.appendChild(action.parent);
@@ -195,6 +215,10 @@ function buildDeviceList(json) {
 				actionList.appendChild(leftList);
 				actionList.appendChild(rightList);
 				device.appendChild(actionList);
+
+				if ( json.devices[i].initialCall != '' ) {
+					initDevice(device, json.devices[i].initialCall);
+				}
 			}
 		}
 	}
@@ -254,6 +278,8 @@ function buildAction(metadata) {
 		input.type = "button";
 		input.value = "button";
 		input.setAttribute("_call", metadata.call);
+		input.setAttribute("name", cleanValue(metadata.label));
+		input.setAttribute("_type", "button");
 
 		input.addEventListener("click", function() {
 			alert("GET on " + this.getAttribute("_call"));
@@ -296,6 +322,8 @@ function buildAction(metadata) {
 		var switchInput = document.createElement("input");
 		switchInput.type = "checkbox";
 		switchInput.setAttribute("_call", metadata.call);
+		switchInput.setAttribute("name", cleanValue(metadata.label));
+		switchInput.setAttribute("_type", "toggle");
 
 		switchInput.addEventListener("click", function() {
 			alert("PUT on " + this.getAttribute("_call") + "?"+ metadata.label.replace(/ /g, '_').toLowerCase() + "=" + this.checked);
@@ -338,6 +366,8 @@ function buildAction(metadata) {
 		input.placeholder = "-";
 		input.pattern = metadata.pattern;
 		input.setAttribute("_call", metadata.call);
+		input.setAttribute("name", cleanValue(metadata.label));
+		input.setAttribute("_type", "input");
 
 		input.addEventListener("keypress", function() {
 			if ( event.keyCode === 13 && this.checkValidity() && this.value != '' ) {
@@ -363,4 +393,65 @@ function addClassesToElement(ele, classes) {
 	for ( var i = 0; i < classes.length; ++i ) {
 		ele.classList.add(classes[i]);
 	}
+}
+
+function initDevice(device, init) {
+	/*
+		{
+		    "highlevel": {
+		        "state": "BOOLEAN"
+		    },
+		    "monitors": {
+		        "Temperature": "STRING | NUMBER | BOOLEAN",
+		        "Oven": "STRING | NUMBER | BOOLEAN"
+		    },
+		    "actions": {
+		        "Light Color": "STRING",
+		        "Camera": "BOOLEAN"
+		    }
+		}
+	*/
+
+	var responseText = '{"highlevel": {"state": false},"monitors": {"temperature": "73° F","oven": "ON"},"actions": {"light_color": "#f00","camera": false}}';
+	var json = JSON.parse(responseText);
+	console.log(init);
+	console.log(device);
+	console.log(json);
+
+	if ( json.hasOwnProperty('highlevel') ) {
+		var highlevel = device.querySelector('div[name="highlevel"]');
+		var type = highlevel.getAttribute("_type");
+		if ( type == HIGHLEVELTYPES.toggle ) {
+			var toggle = device.querySelector('input[type="checkbox"]');
+			toggle.checked = json.highlevel.state;
+			device.querySelector('div[class="highLevelToggleLabel"]').innerHTML = ( (json.highlevel.state) ? toggle.getAttribute("_on") : toggle.getAttribute("_off") )
+		}
+	}
+
+	if ( json.hasOwnProperty('monitors') ) {
+		for ( var monitor in json.monitors ) {
+			if ( json.monitors.hasOwnProperty(monitor) ) {
+				device.querySelector('th[name="' + monitor + '"]').innerHTML = json.monitors[monitor];
+			}
+		}
+	}
+
+	if ( json.hasOwnProperty('actions') ) {
+		var list = device.querySelector('th[name="ActionList"]');
+		for ( var action in json.actions ) {
+			if ( json.actions.hasOwnProperty(action) ) {
+				var actionGroup = device.querySelector('div[name="' + cleanValue(action) + '"]');
+
+				if ( actionGroup.getAttribute("_type") == ACTIONTYPES.toggle ) {
+					actionGroup.querySelector("input[type='checkbox']").checked = json.actions[action];
+				} else if ( actionGroup.getAttribute("_type") == ACTIONTYPES.input ) {
+					actionGroup.querySelector("input[type='text']").value = json.actions[action];
+				}
+			}
+		}
+	}
+}
+
+function cleanValue(string) {
+	return string.replace(/[^\w\s]/gi, '').replace(/\s+/g,' ').replace(/ /g, "_").toLowerCase();
 }
