@@ -116,6 +116,9 @@ input:checked + .slider:before {
 
 /*Devices*/
 /*------------------------------------------------------------------------*/
+#device_list {
+	margin-bottom: 200px;
+}
 .device {
 	width:100%;
 	padding: 10px;

@@ -3,6 +3,7 @@ let monitorCount = 0;
 let monitorAbsCount = 0;
 let actionCount = 0;
 let actionAbsCount = 0;
+let editing = false;
 
 var ACTIONTYPES = {
 	button: "button",
@@ -181,6 +182,7 @@ function load() {
 	const urlParams = new URLSearchParams(window.location.search);
 	const myParam = urlParams.get('editing');
 	if ( myParam == 'true' ) {
+		editing = true;
 		// console.log("editing " + sessionStorage.device);
 
 		document.getElementById("newDeviceTab").innerHTML = "Device";
@@ -259,8 +261,22 @@ function load() {
 
 		document.getElementById("deleteForm").classList.remove("hide");
 		document.getElementById("deleteForm").addEventListener("click", function() {
-			alert("DELETE " + sessionStorage.device);
-		})
+			// alert("DELETE " + sessionStorage.device + "\n" + sessionStorage.deviceID);
+			var r = confirm("Delete " + sessionStorage.device + "?");
+
+			if ( r == false ) return;
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					alert(this.responseText);
+					window.location.href = "device.html?editing=true";
+				}
+			};
+			xhttp.open("DELETE", "https://hap-api.herokuapp.com/devices?id=" + sessionStorage.deviceID, true);
+			xhttp.setRequestHeader("Content-Type", "application/json");
+			xhttp.send();
+		});
 	}
 }
 
@@ -1092,13 +1108,30 @@ function cleanValue(string) {
 
 function submitDevice( device ) {
 	console.log(JSON.stringify(device));
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			console.log(this.responseText);
-		}
-	};
-	xhttp.open("POST", "https://hap-api.herokuapp.com/devices", true);
-	// xhttp.setRequestHeader("Content-Type", "application/json");
-	xhttp.send(JSON.stringify(device));
+
+	if ( editing ) {
+		device._id = sessionStorage.deviceID;
+		
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
+			}
+		};
+		xhttp.open("PUT", "https://hap-api.herokuapp.com/devices", true);
+		xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		xhttp.send(JSON.stringify(device));
+	} 
+	else {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
+			}
+		};
+		xhttp.open("POST", "https://hap-api.herokuapp.com/devices", true);
+		xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		xhttp.send(JSON.stringify(device));
+	}
+	
 }

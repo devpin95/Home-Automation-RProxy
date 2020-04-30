@@ -80,8 +80,10 @@ function buildDeviceList(json) {
 			var deviceTitle = document.createElement("div");
 			deviceTitle.classList.add("deviceTitle");
 			deviceTitle.innerHTML = json.devices[i].header.name;
+			deviceTitle.setAttribute("_id", json.devices[i]._id);
 			deviceTitle.addEventListener("click", function() {
 				sessionStorage.setItem("device", this.innerHTML);
+				sessionStorage.setItem("deviceID", this.getAttribute("_id"));
 				window.location.href = "device.html?editing=true";
 			})
 
