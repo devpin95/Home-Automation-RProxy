@@ -234,7 +234,8 @@ function load() {
 			triggerEvent(document.getElementById("highLevelDataOptions"), "change");
 
 			if ( activeDevice.header.highlevel.type == "message" ) {
-
+				document.getElementById("highLevelDataOptions").value = activeDevice.header.highlevel.type;
+				triggerEvent(document.getElementById("highLevelDataOptions"), "change");
 			}
 			else if ( activeDevice.header.highlevel.type == "toggle" ) {
 				document.getElementById("highLevelDataToggleLabelOff").value = activeDevice.header.highlevel.options.offLabel;
@@ -246,8 +247,7 @@ function load() {
 		} 
 		else {
 			document.getElementById("highLevelDataCheckbox").checked = "false";
-			document.getElementById("highLevelDataOptions").value = activeDevice.header.highlevel.type;
-			triggerEvent(document.getElementById("highLevelDataOptions"), "change");
+			triggerEvent(document.getElementById("highLevelDataCheckbox"), "click");
 		}
 
 		for ( var i = 0; i < activeDevice.monitors.length; ++i ) {
@@ -270,7 +270,7 @@ function load() {
 			xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					alert(this.responseText);
-					window.location.href = "device.html?editing=true";
+					window.location.href = "index.html";
 				}
 			};
 			xhttp.open("DELETE", "https://hap-api.herokuapp.com/devices?id=" + sessionStorage.deviceID, true);
@@ -1022,10 +1022,10 @@ function saveForm(save=true) {
 		var expectedM = {}
 		monitor.label = monitors[i].querySelector("input[name='monitorLabel']").value;
 		if ( monitor.label == "" ) monitor.label = monitors[i].querySelector("input[name='monitorLabel']").getAttribute("placeholder");
-		monitor.label = cleanValue(monitor.label);
+		// monitor.label = cleanValue(monitor.label);
 		monitor.call = monitors[i].querySelector("input[name='monitorCall']").value;
 		json.monitors.push(monitor);
-		expected.monitors[monitor.label] = "STRING | NUMBER | BOOLEAN";
+		expected.monitors[cleanValue(monitor.label)] = "STRING | NUMBER | BOOLEAN";
 	}
 
 	json.actions = [];
@@ -1042,20 +1042,20 @@ function saveForm(save=true) {
 			action.value = actions[i].querySelector("input[name='actionButtonInput']").value;
 			action.label = actions[i].querySelector("input[name='actionButtonLabel']").value;
 			if ( action.label == "" ) action.label = actions[i].querySelector("input[name='actionButtonInput']").getAttribute("placeholder");
-			action.label = cleanValue(action.label);
+			action.label = action.label;
 		}
 		else if ( action.type == "toggle" ) {
 			action.call = actions[i].querySelector("input[name='actionToggleCall']").value;
 			action.label = actions[i].querySelector("input[name='actionToggleLabel']").value;
 			if ( action.label == "" ) action.label = actions[i].querySelector("input[name='actionToggleLabel']").getAttribute("placeholder");
-			action.label = cleanValue(action.label);
+			action.label = action.label;
 			expected.actions[action.label] = "BOOLEAN";
 		}
 		else if ( action.type == "input" ) {
 			action.call = actions[i].querySelector("input[name='actionInputCall']").value;
 			action.label = actions[i].querySelector("input[name='actionInputLabel']").value;
 			if ( action.label == "" ) action.label = actions[i].querySelector("input[name='actionInputLabel']").getAttribute("placeholder");
-			action.label = cleanValue(action.label);
+			action.label = action.label;
 			action.pattern = actions[i].querySelector("input[name='actionInputPattern']").value;
 			expected.actions[action.label] = "STRING";
 		}
@@ -1110,19 +1110,22 @@ function submitDevice( device ) {
 	console.log(JSON.stringify(device));
 
 	if ( editing ) {
+		alert("PUT");
 		device._id = sessionStorage.deviceID;
 		
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				console.log(this.responseText);
+				alert("https://hap-api.herokuapp.com/devices?id=" + sessionStorage.deviceID);
 			}
 		};
-		xhttp.open("PUT", "https://hap-api.herokuapp.com/devices", true);
+		xhttp.open("PUT", "https://hap-api.herokuapp.com/devices?id=" + sessionStorage.deviceID, true);
 		xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 		xhttp.send(JSON.stringify(device));
 	} 
 	else {
+		alert("POST");
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {

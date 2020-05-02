@@ -7,7 +7,7 @@ var ACTIONTYPES = {
 var HIGHLEVELTYPES = {
 	button: "push",
 	toggle: "toggle",
-	input: "input"
+	message: "message"
 };
 
 function load() {
@@ -41,7 +41,7 @@ function getDeviceList() {
 }
 
 function buildDeviceList(json) {
-	console.log(json);
+	console.log("DEVICE LIST", json);
 
 	var deviceList = document.getElementById("device_list");
 
@@ -100,13 +100,14 @@ function buildDeviceList(json) {
 
 
 				// Status message
-				if ( json.devices[i].header.highlevel.type == "status" ) 
+				if ( json.devices[i].header.highlevel.type == "message" ) 
 				{
-					highLevelWrapper.setAttribute("_type", "status");
+					highLevelWrapper.setAttribute("_type", "message");
 					var status = document.createElement("div");
 					status.name = "highlevel";
 					status.classList.add("deviceHighLevel");
 					status.innerHTML = "-";
+					status.setAttribute("name", "highlevelmessage");
 
 					highLevelWrapper.appendChild(status);
 					deviceHeader.appendChild(highLevelWrapper);
@@ -141,6 +142,22 @@ function buildDeviceList(json) {
 					button.name = "highlevel";
 					button.setAttribute("_call", json.devices[i].header.highlevel.options.call)
 
+					button.addEventListener("click", function() {
+						// alert("GET on " + this.getAttribute("_call"));
+						var call = this.getAttribute("_call");
+						var button = this;
+
+						var xhttp = new XMLHttpRequest();
+						xhttp.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+								console.log("BUTTON", button, call, this.responseText);
+							}
+						};
+						xhttp.open("POST", call, true);
+						xhttp.setRequestHeader("Content-Type", "application/json");
+						xhttp.send();
+					})
+
 					highLevelWrapper.appendChild(button);
 					deviceHeader.appendChild(highLevelWrapper);
 				}
@@ -174,7 +191,20 @@ function buildDeviceList(json) {
 
 					(function(call, interval, column){
 						setInterval( function(){
-							column.innerHTML = "GET on " + call;
+							column.style.color = "#27ae60";
+							var xhttp = new XMLHttpRequest();
+							xhttp.onreadystatechange = function() {
+								if (this.readyState == 4 && this.status == 200) {
+									var json = JSON.parse(this.responseText);
+									console.warn("Updating monitor: " + call, column, json);
+									column.innerHTML = json.value;
+									column.style.color = "";
+								}
+							};
+							xhttp.open("GET", call, true);
+							xhttp.setRequestHeader("Content-Type", "application/json");
+							xhttp.send();
+
 						}, interval * 60000 );
 					})(call, interval, value_column);
 
@@ -218,9 +248,10 @@ function buildDeviceList(json) {
 				actionList.appendChild(rightList);
 				device.appendChild(actionList);
 
-				if ( json.devices[i].initialCall != '' ) {
-					initDevice(device, json.devices[i].initialCall);
-				}
+			}
+
+			if ( json.devices[i].initialCall != '' ) {
+				initDevice(device, json.devices[i].initialCall);
 			}
 		}
 	}
@@ -245,7 +276,30 @@ function buildToggleButton(metadata) {
 	checkbox.setAttribute("_call", metadata.call);
 	checkbox.setAttribute("_parameter", "highlevel");
 	checkbox.addEventListener("click", function() {
-		alert("PUT on " + this.getAttribute("_call") + "?" + this.getAttribute("_parameter") + "=" + this.checked);
+		// alert("PUT on " + this.getAttribute("_call") + "?" + this.getAttribute("_parameter") + "=" + this.checked);
+
+		var call = this.getAttribute("_call");
+		var state = this.checked;
+		var toggle = this;
+
+		console.log(this.parentNode.parentNode.querySelector("div[class='highLevelToggleLabel'"));
+		if ( state ) {
+			this.parentNode.parentNode.querySelector("div[class='highLevelToggleLabel'").innerHTML = this.getAttribute("_on");
+			console.log(this.getAttribute("_on"));
+		} else {
+			this.parentNode.parentNode.querySelector("div[class='highLevelToggleLabel'").innerHTML = this.getAttribute("_off");
+			console.log(this.getAttribute("_off"));
+		}
+
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				console.log("TOGGLE", toggle, call + "?state=" + state, this.responseText);
+			}
+		};
+		xhttp.open("POST", call + "?state=" + state, true);
+		xhttp.setRequestHeader("Content-Type", "application/json");
+		xhttp.send();
 	});
 
 	var span = document.createElement("span");
@@ -284,7 +338,19 @@ function buildAction(metadata) {
 		input.setAttribute("_type", "button");
 
 		input.addEventListener("click", function() {
-			alert("GET on " + this.getAttribute("_call"));
+			// alert("GET on " + this.getAttribute("_call"));
+			var call = this.getAttribute("_call");
+			var button = this;
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log("BUTTON", button, call, this.responseText);
+				}
+			};
+			xhttp.open("POST", call, true);
+			xhttp.setRequestHeader("Content-Type", "application/json");
+			xhttp.send();
 		});
 
 		parent.appendChild(label);
@@ -328,7 +394,20 @@ function buildAction(metadata) {
 		switchInput.setAttribute("_type", "toggle");
 
 		switchInput.addEventListener("click", function() {
-			alert("PUT on " + this.getAttribute("_call") + "?"+ metadata.label.replace(/ /g, '_').toLowerCase() + "=" + this.checked);
+			// alert("PUT on " + this.getAttribute("_call") + "?"+ metadata.label.replace(/ /g, '_').toLowerCase() + "=" + this.checked);
+			var call = this.getAttribute("_call");
+			var state = this.checked;
+			var toggle = this;
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log("TOGGLE", toggle, call + "?state=" + state, this.responseText);
+				}
+			};
+			xhttp.open("POST", call + "?state=" + state, true);
+			xhttp.setRequestHeader("Content-Type", "application/json");
+			xhttp.send();
 		});
 
 		var switchSpan = document.createElement("span");
@@ -374,9 +453,20 @@ function buildAction(metadata) {
 		input.addEventListener("keypress", function() {
 			if ( event.keyCode === 13 && this.checkValidity() && this.value != '' ) {
 				var body = {};
-				var key = this.previousSibling.innerHTML.replace(/[^a-zA-Z ]/g, "").replace(/\s+/g,' ').replace(/ /g, '_').toLowerCase();
-				body[key] = this.value;
-				alert("PUT on " + this.getAttribute("_call") + '\nBody:' + JSON.stringify(body));
+				body.value = this.value;
+
+				var call = this.getAttribute("_call");
+				var input = this;
+
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						console.log("INPUT", input, call, this.responseText);
+					}
+				};
+				xhttp.open("POST", call, true);
+				xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+				xhttp.send(JSON.stringify(body));
 			}
 		})
 
@@ -414,44 +504,59 @@ function initDevice(device, init) {
 		}
 	*/
 
-	var responseText = '{"highlevel": {"state": false},"monitors": {"temperature": "73° F","oven": "ON"},"actions": {"light_color": "#f00","camera": false}}';
-	var json = JSON.parse(responseText);
-	console.log(init);
-	console.log(device);
-	console.log(json);
-
-	if ( json.hasOwnProperty('highlevel') ) {
-		var highlevel = device.querySelector('div[name="highlevel"]');
-		var type = highlevel.getAttribute("_type");
-		if ( type == HIGHLEVELTYPES.toggle ) {
-			var toggle = device.querySelector('input[type="checkbox"]');
-			toggle.checked = json.highlevel.state;
-			device.querySelector('div[class="highLevelToggleLabel"]').innerHTML = ( (json.highlevel.state) ? toggle.getAttribute("_on") : toggle.getAttribute("_off") )
-		}
-	}
-
-	if ( json.hasOwnProperty('monitors') ) {
-		for ( var monitor in json.monitors ) {
-			if ( json.monitors.hasOwnProperty(monitor) ) {
-				device.querySelector('th[name="' + monitor + '"]').innerHTML = json.monitors[monitor];
-			}
-		}
-	}
-
-	if ( json.hasOwnProperty('actions') ) {
-		var list = device.querySelector('th[name="ActionList"]');
-		for ( var action in json.actions ) {
-			if ( json.actions.hasOwnProperty(action) ) {
-				var actionGroup = device.querySelector('div[name="' + cleanValue(action) + '"]');
-
-				if ( actionGroup.getAttribute("_type") == ACTIONTYPES.toggle ) {
-					actionGroup.querySelector("input[type='checkbox']").checked = json.actions[action];
-				} else if ( actionGroup.getAttribute("_type") == ACTIONTYPES.input ) {
-					actionGroup.querySelector("input[type='text']").value = json.actions[action];
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var json = JSON.parse(this.responseText);
+			console.log("INIT " + init, device);
+			try 
+			{
+				if ( json.hasOwnProperty('highlevel') ) {
+					var highlevel = device.querySelector('div[name="highlevel"]');
+					var type = highlevel.getAttribute("_type");
+					if ( type == HIGHLEVELTYPES.toggle ) {
+						var toggle = device.querySelector('input[type="checkbox"]');
+						toggle.checked = json.highlevel.state;
+						device.querySelector('div[class="highLevelToggleLabel"]').innerHTML = ( (json.highlevel.state) ? toggle.getAttribute("_on") : toggle.getAttribute("_off") )
+					}
+					else if ( type == HIGHLEVELTYPES.message ) {
+						var message = device.querySelector('div[name="highlevelmessage"]');
+						message.innerHTML = json.highlevel.value;
+					}
 				}
+
+				if ( json.hasOwnProperty('monitors') ) {
+					for ( var monitor in json.monitors ) {
+						if ( json.monitors.hasOwnProperty(monitor) ) {
+							device.querySelector('th[name="' + monitor + '"]').innerHTML = json.monitors[monitor];
+						}
+					}
+				}
+
+				if ( json.hasOwnProperty('actions') ) {
+					var list = device.querySelector('th[name="ActionList"]');
+					for ( var action in json.actions ) {
+						if ( json.actions.hasOwnProperty(action) ) {
+							var actionGroup = device.querySelector('div[name="' + cleanValue(action) + '"]');
+
+							if ( actionGroup.getAttribute("_type") == ACTIONTYPES.toggle ) {
+								actionGroup.querySelector("input[type='checkbox']").checked = json.actions[action];
+							} else if ( actionGroup.getAttribute("_type") == ACTIONTYPES.input ) {
+								actionGroup.querySelector("input[type='text']").value = json.actions[action];
+							}
+						}
+					}
+				}
+			} 
+			catch ( err ) {
+				console.error("Error calling " + init + " in ", device, err);
+				device.style.border = "1px solid #e74c3c";
 			}
 		}
-	}
+	};
+	xhttp.open("GET", init, true);
+	xhttp.setRequestHeader("Content-Type", "application/json");
+	xhttp.send();
 }
 
 function cleanValue(string) {
