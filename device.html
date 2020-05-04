@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="css/reset.css">
+<link rel="stylesheet" type="text/css" href="css/fonts.css">
+<link rel="stylesheet" type="text/css" href="css/newdevice.css">
+<title>Hello World!</title>
+</head>
+
+<body onload="load()">
+	<div class="mainWrapper clearfix">
+		<div class="mainActions clearfix">
+			<h1 id="newDeviceTab" class="mainHeader mainHeaderActive">New Device</h1>
+			<h1 id="jsonTab" class="mainHeader mainHeaderUnactive hide">JSON</h1>
+		</div>
+		<div id="deviceForm" class="deviceMetadataWrapper">
+
+			<div id="" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Initial Call</h2>
+					<input id="initialCall" type="text" value="" placeholder="Call" class="initialCallInput">
+				</div>
+			</div>
+
+			<div id="deviceMetadata" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Action Bar</h2>
+					<h3 class="sectionSub">Header</h3>
+					<div class="formSubSection">
+						Device Name<br/>
+						<input id="actionBarHeaderName" type="text" name="deviceTitle" value="" placeholder="-">
+						Color<br/>
+						<input id="actionBarHeaderColor" class="inputShort" type="text" name="deviceTitle" placeholder="-">
+					</div>
+
+					<div class="formSubSectionHeader">
+						<div class="checkbox checked" id="highLevelDataCheckbox" checked="true"></div>
+						<label class="sectionSub" id="highLevelDataLabel">High Level Data/Action</label>
+						<span class="selectArrow">&#9660;</span>
+						<select id="highLevelDataOptions">
+							<option value="message">Message</option>
+							<option value="toggle">Toggle</option>
+							<option value="push">Push Button</option>
+						</select>
+					</div>
+					<div  id="highLevelDataSection">
+						<div class="formSubSection" id="HighLevelDataMessage">
+							Call<br/>
+							<input id="HighLevelDataMessageCall" type="text" name="deviceTitle" value="" placeholder="-">
+						</div>
+						<div class="formSubSection" id="HighLevelDataToggle">
+							Label (Off)<br/>
+							<input id="highLevelDataToggleLabelOff" type="text" name="deviceTitle" value="" placeholder="Label">
+							Label (On)<br/>
+							<input id="highLevelDataToggleLabelOn" type="text" name="deviceTitle" value="" placeholder="Label">
+							Call<br/>
+							<input id="highLevelDataToggleCall" type="text" name="deviceTitle" placeholder="-">
+						</div>
+						<div class="formSubSection" id="HighLevelDataPushButton">
+							Button Text<br/>
+							<input id="highLevelDataButtonText" type="text" name="deviceTitle" value="" placeholder="Button">
+							Call<br/>
+							<input id="highLevelDataButtonCall" type="text" name="deviceTitle" placeholder="-">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Monitors</h2>
+					<div class="monitorCreate" id="monitorCreate">+ Monitor</div><br/>
+					<div id="monitorList">
+						
+					</div>
+				</div>
+			</div>
+
+			<div id="" class="formSection">
+				<div class="formGroup clearfix">
+					<h2 class="sectionTitle">Actions</h2>
+					<div class="actionCreate" id="actionCreateButton">+ Button&nbsp;</div>
+					<div class="actionCreate" id="actionCreateInput">+ Input&nbsp;</div>
+					<div class="actionCreate" id="actionCreateToggle">+ Toggle&nbsp;</div>
+					<br/>
+					<div id="actionList"></div>
+				</div>
+			</div>
+			<div id="" class="finishActions">
+				<div class="backHome"><a href="index.html">&#x2190;&nbsp;&nbsp;&nbsp;Back to Devices</a></div>
+				<div id="saveForm" class="formSave formAction">Save</div>
+				<div id="deleteForm" class="formSave formAction hide">Delete</div>
+			</div>
+		</div>
+
+		<div id="jsonExpected" class="deviceMetadataWrapper hide">
+			<p id="jsonInstruct">A JSON object with this information is expected on device init response:</p>
+			<div id="jsonCopy">Copy JSON</div>
+			<textarea id="jsonObj" spellcheck="false"></textarea>
+			<div id="backHome"><a href="index.html">&#x2190;&nbsp;&nbsp;&nbsp;Back to Devices</a></div>
+		</div>
+
+		<div class="devicePreviewWrapper">
+			<h1 class="mainHeader">Preview</h1>
+
+			<div id="devicePreview" class="formSection device">
+				<div class="deviceHeader clearfix">
+					<div class="deviceTitle" id="previewDeviceName">-</div>
+
+					<div class="deviceHighLevel" id="deviceHighLevelPreview">
+						<div class="highLevelToggleLabel" id="deviceMessagePreview">-</div>
+
+						<div id="deviceTogglePreview">
+							<div class="highLevelToggleLabel" id="deviceToggleLabelPreview">Off Label</div>
+							<label class="switch">
+							  <input _on="On Label" _off="Off Label" id="deviceToggleInputPreview" type="checkbox">
+							  <span class="slider round"></span>
+							</label>
+						</div>
+
+						<div id="deviceTogglePreview">
+							<input id="deviceButtonPreview" type="button" name="short text" value="button">
+						</div>
+					</div>
+				</div>
+
+				<!-- Monitors -->
+				<div class="deviceMonitors hide" id="deviceMonitorsPreview">
+					<table id="deviceMonitorListPreview"></table>
+				</div>
+
+				<!-- Actions -->
+				<div id="actionListPreview" class="hide clearfix">
+					<div class="actionListLeftPreview clearfix" id="actionListLeft"></div>
+					<div class="actionListRightPreview clearfix" id="actionListRight"></div>
+					<div id="actionListCenter" class="actionListCenterPreview clearfix"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script src="js/formactions.js"></script>
+</body>
+</html> 

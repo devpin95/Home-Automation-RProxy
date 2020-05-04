@@ -5,7 +5,8 @@
 <link rel="stylesheet" type="text/css" href="css/reset.css">
 <link rel="stylesheet" type="text/css" href="css/fonts.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<title>Hello World!</title>
+<link rel="icon" href="favicon.png" sizes="64x64" type="image/png">
+<title>GUI</title>
 </head>
 
 <body onload="load()">
@@ -13,77 +14,13 @@
 	<!-- MAIN ACTIONS -->
 	<!-- ************************************************************************************* -->
 	<div class="mainActions">
-		<div class="action"><a href="" id="action_new_device">+ New Device</a></div>
+		<div class="action"><a href="device.html" id="action_new_device">+ New Device</a></div>
 	</div>
 
 	<!-- DEVICE LIST -->
 	<!-- ************************************************************************************* -->
 	<div class="deviceList" id="device_list">
-		<div class="device">
-
-			<!-- Header -->
-			<div class="deviceHeader clearfix">
-				<div class="deviceTitle">Home Automation RProxy</div>
-				<div class="deviceHighLevel">
-					<div class="highLevelToggleLabel">On</div>
-					<label class="switch">
-					  <input type="checkbox">
-					  <span class="slider round"></span>
-					</label>
-				</div>
-			</div>
-
-			<!-- Monitors -->
-			<div class="deviceMonitors">
-				<table>
-					<tr>
-						<th>Label</th>
-						<th>value</th>
-					</tr>
-					<tr>
-						<th>Label</th>
-						<th>value</th>
-					</tr>
-				</table>
-			</div>
-
-			<!-- Actions -->
-			<div class="deviceActions clearfix" id="device_actions">
-
-				<div class="deviceActionsLeft clearfix">
-					<div class="deviceActionGroup">
-						<div class="deviceActionLabel">Label Toggle Switch</div>
-						<div class="deviceActionSwitchWrapper">
-							<label class="switch">
-								<input type="checkbox">
-								<span class="slider round"></span>
-							</label>
-						</div>
-					</div>
-
-					<div class="deviceActionGroup">
-						<div class="deviceActionLabel">Label Toggle Switch</div>
-						<input type="button" name="short text" value="button">
-					</div>
-				</div>
-
-				<div class="deviceActionsRight">
-					<div class="deviceActionGroup">
-						<div class="deviceActionLabel">Label Text Input Short</div>
-						<input type="text" name="short text" value="-">
-					</div>
-					<div class="deviceActionGroup">
-						<div class="deviceActionLabel">Label Toggle Switch</div>
-						<div class="deviceActionSwitchWrapper">
-							<label class="switch">
-								<input type="checkbox">
-								<span class="slider round"></span>
-							</label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div id="loading" class="lds-facebook">Loading...<div></div><div></div><div></div></div>
 	</div>
 </div>
 
