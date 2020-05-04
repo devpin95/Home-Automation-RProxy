@@ -189,24 +189,26 @@ function buildDeviceList(json) {
 					var call = json.devices[i].monitors[j].call;
 					var interval = 1;
 
-					(function(call, interval, column){
-						setInterval( function(){
-							column.style.color = "#27ae60";
-							var xhttp = new XMLHttpRequest();
-							xhttp.onreadystatechange = function() {
-								if (this.readyState == 4 && this.status == 200) {
-									var json = JSON.parse(this.responseText);
-									console.warn("Updating monitor: " + call, column, json);
-									column.innerHTML = json.value;
-									column.style.color = "";
-								}
-							};
-							xhttp.open("GET", call, true);
-							xhttp.setRequestHeader("Content-Type", "application/json");
-							xhttp.send();
+					if ( call !== '' ) {
+						(function(call, interval, column){
+							setInterval( function(){
+								column.style.color = "#27ae60";
+								var xhttp = new XMLHttpRequest();
+								xhttp.onreadystatechange = function() {
+									if (this.readyState == 4 && this.status == 200) {
+										var json = JSON.parse(this.responseText);
+										console.warn("Updating monitor: " + call, column, json);
+										column.innerHTML = json.value;
+										column.style.color = "";
+									}
+								};
+								xhttp.open("GET", call, true);
+								xhttp.setRequestHeader("Content-Type", "application/json");
+								xhttp.send();
 
-						}, interval * 60000 );
-					})(call, interval, value_column);
+							}, interval * 60000 );
+						})(call, interval, value_column);
+					}
 
 					row.appendChild(label_column);
 					row.appendChild(value_column);

@@ -269,7 +269,7 @@ function load() {
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
-					alert(this.responseText);
+					// alert(this.responseText);
 					window.location.href = "index.html";
 				}
 			};
@@ -1110,14 +1110,14 @@ function submitDevice( device ) {
 	console.log(JSON.stringify(device));
 
 	if ( editing ) {
-		alert("PUT");
+		//alert("PUT");
 		device._id = sessionStorage.deviceID;
 		
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				console.log(this.responseText);
-				alert("https://hap-api.herokuapp.com/devices?id=" + sessionStorage.deviceID);
+				//alert("https://hap-api.herokuapp.com/devices?id=" + sessionStorage.deviceID);
 			}
 		};
 		xhttp.open("PUT", "https://hap-api.herokuapp.com/devices?id=" + sessionStorage.deviceID, true);
@@ -1125,7 +1125,7 @@ function submitDevice( device ) {
 		xhttp.send(JSON.stringify(device));
 	} 
 	else {
-		alert("POST");
+		//alert("POST");
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
